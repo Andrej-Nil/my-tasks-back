@@ -17,13 +17,16 @@ return [
 
     'paths' => [
         'api/*',
+        'register',
+        'login',
+        'logout',
         'sanctum/csrf-cookie',
     ],
 
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'http://localhost:5173',
+        'http://app.my-tasks.local:5173',
     ],
 
     'allowed_origins_patterns' => [],
