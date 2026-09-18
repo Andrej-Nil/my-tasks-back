@@ -9,7 +9,6 @@ class UserController extends Controller
 {
     public function show(Request $request){
         return response()->json([
-            'authenticated' => true,
             'user' => $request->user()
         ]);
     }
