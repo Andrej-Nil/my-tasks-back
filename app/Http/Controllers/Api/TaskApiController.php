@@ -5,16 +5,20 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Task\StoreTaskRequest;
 use App\Models\Task;
+use App\Repositories\TaskRepository;
 use Illuminate\Http\Request;
 
-class TaskController extends Controller
+class TaskApiController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $userId = $request->user()['id'];
+        $tasks = TaskRepository::getPagination($userId);
+
+        return response()->json(['tasks' => $tasks]);
     }
 
     /**
@@ -22,7 +26,13 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        return ['you'=>'here'];
+        $validatedDate = $request->validated();
+
+        $validatedDate['user_id'] = $request->user()['id'];
+
+        $task = TaskRepository::createTask($validatedDate);
+
+        return response()->json(['task' => $task]);
     }
 
     /**
@@ -30,7 +40,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
+        return ['you'=>'show task'];
     }
 
 
@@ -39,7 +49,7 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+        return ['you'=>'update task'];
     }
 
     /**
@@ -47,6 +57,6 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        return ['you'=>'destroy task'];
     }
 }
