@@ -7,8 +7,15 @@ use App\Models\Task;
 class TaskRepository
 {
     public static function getPagination($userId):array{
-        return Task::where('user_id', $userId)->get()->toArray();
+        return Task::where('user_id', $userId)->latest()->get()->toArray();
     }
+//
+//    public static function getTasksByUser(User $user):array{
+//        return $user->tasks()
+//            ->latest()
+//            ->get()
+//            ->toArray();
+//    }
 
 //        return Job::limit($count)->orderBy('sort', 'ASC')->get()->toArray();
 //        if(isset($data['search'])){

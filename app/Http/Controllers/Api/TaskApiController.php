@@ -15,8 +15,7 @@ class TaskApiController extends Controller
      */
     public function index(Request $request)
     {
-        $userId = $request->user()['id'];
-        $tasks = TaskRepository::getPagination($userId);
+        $tasks = TaskRepository::getPagination($request->user()->id);
 
         return response()->json(['tasks' => $tasks]);
     }
@@ -26,11 +25,11 @@ class TaskApiController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        $validatedDate = $request->validated();
+        $validatedData = $request->validated();
 
-        $validatedDate['user_id'] = $request->user()['id'];
+        $validatedData['user_id'] = $request->user()->id;
 
-        $task = TaskRepository::createTask($validatedDate);
+        $task = TaskRepository::createTask($validatedData);
 
         return response()->json(['task' => $task]);
     }
