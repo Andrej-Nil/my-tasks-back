@@ -7,6 +7,7 @@ use App\Http\Requests\Task\StoreTaskRequest;
 use App\Models\Task;
 use App\Repositories\TaskRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class TaskApiController extends Controller
 {
@@ -48,6 +49,8 @@ class TaskApiController extends Controller
      */
     public function update(Request $request, Task $task)
     {
+
+
         return ['you'=>'update task'];
     }
 
@@ -56,6 +59,8 @@ class TaskApiController extends Controller
      */
     public function destroy(Task $task)
     {
-        return ['you'=>'destroy task'];
+        Gate::authorize('delete', $task);
+
+        return TaskRepository::deleteTask($task);
     }
 }

@@ -9,6 +9,15 @@ class TaskRepository
     public static function getPagination($userId):array{
         return Task::where('user_id', $userId)->latest()->get()->toArray();
     }
+
+
+    public static function createTask(array $data):array{
+        return Task::create($data)->toArray();
+    }
+
+    public static function deleteTask(Task $task):int{
+        return $task->delete();
+    }
 //
 //    public static function getTasksByUser(User $user):array{
 //        return $user->tasks()
@@ -51,9 +60,7 @@ class TaskRepository
 //        toArray();
 //    }
 //
-    public static function createTask(array $data):array{
-        return Task::create($data)->toArray();
-    }
+
 //
 //    public static function getPostById(int $id, $cookieId = ''):array{
 //        $item = Post::withCount([
@@ -77,9 +84,7 @@ class TaskRepository
 //        return Post::where('id', $id)->update($data);
 //    }
 //
-//    public static function deletePost(int $id):bool{
-//        return Post::where('id', $id)->delete();
-//    }
+
 //
 //    public static function updateSort($id, $sort){
 //        $result = Post::where('id', $id);

@@ -9,5 +9,6 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::get('/user', [UserApiController::class, 'show']);
     Route::get('/tasks', [TaskApiController::class, 'index']);
     Route::post('/tasks', [TaskApiController::class, 'store']);
+    Route::delete('/tasks/{task}', [TaskApiController::class, 'destroy']);
 });
 
