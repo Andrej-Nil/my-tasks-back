@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Task\StoreTaskRequest;
+use App\Http\Requests\Task\UpdateTaskRequest;
 use App\Models\Task;
 use App\Repositories\TaskRepository;
 use Illuminate\Http\Request;
@@ -26,6 +27,7 @@ class TaskApiController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
+
         $validatedData = $request->validated();
 
         $validatedData['user_id'] = $request->user()->id;
@@ -47,11 +49,16 @@ class TaskApiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Task $task)
+    public function update(UpdateTaskRequest $request, Task $task)
     {
 
+        Gate::authorize('update', $task);
 
-        return ['you'=>'update task'];
+        $validatedData = $request->validated();
+
+        $task = TaskRepository::updateTask($validatedData, $task);
+
+        return response()->json(['task' => $task]);
     }
 
     /**

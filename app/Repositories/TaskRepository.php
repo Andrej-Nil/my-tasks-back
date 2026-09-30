@@ -15,6 +15,11 @@ class TaskRepository
         return Task::create($data)->toArray();
     }
 
+    public static function updateTask(array $data, Task $task): Task{
+        $task->update($data);
+        return $task;
+    }
+
     public static function deleteTask(Task $task):int{
         return $task->delete();
     }
