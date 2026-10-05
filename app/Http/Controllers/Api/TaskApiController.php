@@ -42,7 +42,9 @@ class TaskApiController extends Controller
      */
     public function show(Task $task)
     {
-        return ['you'=>'show task'];
+        Gate::authorize('view', $task);
+
+        return response()->json(['task' => $task]);
     }
 
 
