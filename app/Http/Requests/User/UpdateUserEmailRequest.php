@@ -22,7 +22,7 @@ class UpdateUserEmailRequest extends FormRequest
                 'email',
                 Rule::unique('users', 'email')->ignore(auth()->id()),
             ],
-            'password'  =>['required', 'string'],
+            'password'  =>['required', 'string', 'current_password'],
         ];
     }
 
@@ -35,7 +35,8 @@ class UpdateUserEmailRequest extends FormRequest
             'email.unique'   => 'Такая почта уже используется',
 
             'password.required'    => 'Введите текущий пароль',
-            'password.string'      => 'Пароль должен быть строкой'
+            'password.string'      => 'Пароль должен быть строкой',
+            'password.current_password'      => 'Пароль неверный',
         ];
     }
 }

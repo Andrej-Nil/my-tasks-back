@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UpdateUserNameRequest;
 use App\Http\Requests\User\UpdateUserEmailRequest;
+use App\Http\Requests\User\UpdateUserPasswordRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,6 @@ class UserApiController extends Controller
 
     public function updateName(UpdateUserNameRequest $request) {
 
-
         $user = $request->user();
 
         $user->update($request->validated());
@@ -27,21 +27,28 @@ class UserApiController extends Controller
     }
 
     public function updateEmail(UpdateUserEmailRequest $request) {
-        abort(422);
 
         $user = $request->user();
 
-
-        if (!Hash::check($request->password, $user->password)) {
-            return response()->json([
-                'message' => 'Неверный пароль пароль',
-            ], 422);
-        }
+        $validation = $request->validated();
 
         $user->update([
-            'email' =>  $request->email,
+            'email' =>  $request->$validation['email'],
         ]);
 
         return response()->json($user);
+    }
+
+
+    public function updatePassword(UpdateUserPasswordRequest $request){
+
+        $user = $request->user();
+        $validation = $request->validated();
+
+        $user->update([
+            'password' => Hash::make($validation['new_password']),
+        ]);
+
+        return response()->json("Пароль успешно изменен");
     }
 }
