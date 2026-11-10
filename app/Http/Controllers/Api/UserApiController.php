@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\DeleteUserRequest;
 use App\Http\Requests\User\UpdateUserNameRequest;
 use App\Http\Requests\User\UpdateUserEmailRequest;
 use App\Http\Requests\User\UpdateUserPasswordRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
@@ -50,5 +52,20 @@ class UserApiController extends Controller
         ]);
 
         return response()->json("Пароль успешно изменен");
+    }
+
+
+    public function delete(DeleteUserRequest $request){
+        $user = $request->user();
+
+        $user->tokens()->delete();
+
+        Auth::guard('web')->logout();;
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        $user->delete();
+
+        return response()->json("Профиль удален.");
     }
 }

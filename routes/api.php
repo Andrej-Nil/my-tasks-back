@@ -10,6 +10,7 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::put('/user/update-name', [UserApiController::class, 'updateName']);
     Route::put('/user/update-email', [UserApiController::class, 'updateEmail']);
     Route::put('/user/update-password', [UserApiController::class, 'updatePassword']);
+    Route::delete('/user/delete', [UserApiController::class, 'delete']);
     Route::get('/tasks', [TaskApiController::class, 'index']);
     Route::post('/tasks', [TaskApiController::class, 'store']);
     Route::get('/tasks/{task}', [TaskApiController::class, 'show']);
