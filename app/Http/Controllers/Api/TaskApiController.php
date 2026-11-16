@@ -1,0 +1,75 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Task\StoreTaskRequest;
+use App\Http\Requests\Task\UpdateTaskRequest;
+use App\Models\Task;
+use App\Repositories\TaskRepository;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+
+class TaskApiController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $tasks = TaskRepository::getPagination($request->user()->id);
+
+        return response()->json(['tasks' => $tasks]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StoreTaskRequest $request)
+    {
+
+        $validatedData = $request->validated();
+
+        $validatedData['user_id'] = $request->user()->id;
+
+        $task = TaskRepository::createTask($validatedData);
+
+        return response()->json(['task' => $task]);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Task $task)
+    {
+        Gate::authorize('view', $task);
+
+        return response()->json(['task' => $task]);
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateTaskRequest $request, Task $task)
+    {
+
+        Gate::authorize('update', $task);
+
+        $validatedData = $request->validated();
+
+        $task = TaskRepository::updateTask($validatedData, $task);
+
+        return response()->json(['task' => $task]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Task $task)
+    {
+        Gate::authorize('delete', $task);
+
+        return TaskRepository::deleteTask($task);
+    }
+}
