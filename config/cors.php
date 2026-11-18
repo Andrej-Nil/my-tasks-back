@@ -27,6 +27,8 @@ return [
 
     'allowed_origins' => [
         'http://app.my-tasks.local:5173',
+        'https://my-tasks.andrej-nill.ru',
+
     ],
 
     'allowed_origins_patterns' => [],
